@@ -120,6 +120,4 @@ while money >= 10 or pots > 0:
     pots_on_bay = 0     # Resets pots.
     pots_on_beach = 0 
 
-    first_round = False
-
 print("\nGame Over")
