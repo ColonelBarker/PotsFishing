@@ -5,17 +5,15 @@ def print_player_info(money, pots):
     print(f"You have ${money} and {pots} pots.")
 
 def weather_forecast():
-    # Generate random percentages for the bay. This is magic code.
-    bay_storm_percentage = random.randint(1, 50)
-    bay_sunny_percentage = random.randint(1, 50)
-    bay_clear_percentage = 100 - bay_storm_percentage - bay_sunny_percentage
+    # Generate random percentages for the bay
+    bay_percentages = sorted([random.randint(0, 100) for _ in range(2)])
+    bay_storm_percentage, bay_sunny_percentage, bay_clear_percentage = bay_percentages[0], bay_percentages[1] - bay_percentages[0], 100 - bay_percentages[1]
 
-    # Generate random percentages for the beach. This needs work.
-    beach_storm_percentage = random.randint(1, 10)
-    beach_sunny_percentage = random.randint(1, 60)
-    beach_clear_percentage = 100 - beach_storm_percentage - beach_sunny_percentage
+    # Generate random percentages for the beach
+    beach_percentages = sorted([random.randint(0, 100) for _ in range(2)])
+    beach_storm_percentage, beach_sunny_percentage, beach_clear_percentage = beach_percentages[0], beach_percentages[1] - beach_percentages[0], 100 - beach_percentages[1]
 
-    print("\nWeather report. If there is a storm, you will lose your pots.")
+    print("Weather report. If there is a storm, you will lose your pots.")
     print("\nBAY")
     print(f"Storm {bay_storm_percentage}%")
     print(f"Sunny {bay_sunny_percentage}%")
@@ -59,7 +57,7 @@ def fishing_simulation(pots_in_bay, pots_in_beach, bay_weather, beach_weather):
         money_earned = money_earned + (pots_in_beach * 20)
         returnpots += pots_in_beach
     else:
-        print("Not a great catch. You lose your pots")
+        print("Not a great catch. You lose your pots.")
 
     return returnpots, money_earned
 
@@ -68,7 +66,7 @@ def fishing_simulation(pots_in_bay, pots_in_beach, bay_weather, beach_weather):
 #Initial variables
 money = 50
 pots = 0
-day = 0
+day = 1
 
 print("Welcome to the Fishing Dice Game!\n")
 print("You are a fisherman trying to make a living by deploying pots in the bay and on the beach.")
@@ -110,8 +108,9 @@ while money >= 10 or pots > 0:
     print_player_info(money, pots)
 
     # 4. Fishing simulation
-    pots, money_earned = fishing_simulation(pots_on_bay, pots_on_beach, bay_weather, beach_weather)
+    ret_pots, money_earned = fishing_simulation(pots_on_bay, pots_on_beach, bay_weather, beach_weather)
     money += money_earned
+    pots += ret_pots
 
     # 5. Results
     print_player_info(money, pots)
